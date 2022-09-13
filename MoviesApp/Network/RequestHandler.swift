@@ -10,35 +10,34 @@ import Foundation
 /// This is RequestHandling implementation returns any Codable Data Model.
 class RequestHandler {
 
-    func request<T>(route: APIRequest) async throws -> T where T: Codable {
+    func request<T>(route: APIRequest, completionHandler: @escaping (Result<T, RequestError>) -> Void) where T: Codable {
         let request = route.asRequest()
         let session = URLSession.shared
-        return try await withCheckedThrowingContinuation { continuation in
-            let task = session.dataTask(with: request, completionHandler: { data, _, error -> Void in
-                // Request Error
-                if let _ = error {
-                    let networkError = RequestError.networkError( url: request.url?.absoluteString ?? "")
-                    continuation.resume(with: .failure(networkError))
-                    return
-                }
-                // check if data is not empty
-                if let data = data {
-                    // Try Parsing data
-                    if let responseResults = self.parse(data: data, to: T.self) {
-                        continuation.resume(with: .success(responseResults))
-                    } else {
-                        // Parsing Error
-                        continuation.resume(with: .failure(RequestError.jsonParseError(model: "\(T.self)", url: request.url?.absoluteString ?? "")))
-                    }
+        let task = session.dataTask(with: request) { data, _, error in
+            // Request Error
+            if let _ = error {
+                let networkError = RequestError.networkError( url: request.url?.absoluteString ?? "")
+                completionHandler(.failure(networkError))
+                return
+            }
+            // check if data is not empty
+            if let data = data {
+                // Try Parsing data
+                if let responseResults = self.parse(data: data, to: T.self) {
+                    completionHandler(.success(responseResults))
                 } else {
-                    // No Data recieved
-                    let networkError = RequestError.networkError( url: request.url?.absoluteString ?? "")
-                    continuation.resume(with: .failure(networkError))
+                    // Parsing Error
+                    completionHandler(.failure(RequestError.jsonParseError(model: "\(T.self)", url: request.url?.absoluteString ?? "")))
                 }
-            })
+            } else {
+                // No Data recieved
+                let networkError = RequestError.networkError( url: request.url?.absoluteString ?? "")
+                completionHandler(.failure(networkError))
+            }
 
-            task.resume()
         }
+        task.resume()
+
     }
 
     // Parse any Json data to the given Data Model Type
