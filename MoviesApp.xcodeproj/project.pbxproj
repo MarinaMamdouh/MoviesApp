@@ -35,6 +35,11 @@
 		F844BC1A28D1215700669178 /* MoviesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC1928D1215700669178 /* MoviesListPresenter.swift */; };
 		F844BC1C28D1217A00669178 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC1B28D1217A00669178 /* MovieCell.swift */; };
 		F844BC1E28D121ED00669178 /* MovieCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC1D28D121ED00669178 /* MovieCellPresenter.swift */; };
+		F844BC2728D124CF00669178 /* MoviesListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC2628D124CF00669178 /* MoviesListPresenterTests.swift */; };
+		F844BC2A28D125AE00669178 /* MockMoviesListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC2928D125AE00669178 /* MockMoviesListDelegate.swift */; };
+		F844BC2E28D12D7C00669178 /* MovieCellPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC2D28D12D7C00669178 /* MovieCellPresenterTests.swift */; };
+		F844BC3028D12D9400669178 /* MockMovieCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC2F28D12D9400669178 /* MockMovieCellDelegate.swift */; };
+		F844BC3228D12E8900669178 /* MockMovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F844BC3128D12E8900669178 /* MockMovieModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +92,11 @@
 		F844BC1928D1215700669178 /* MoviesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListPresenter.swift; sourceTree = "<group>"; };
 		F844BC1B28D1217A00669178 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		F844BC1D28D121ED00669178 /* MovieCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCellPresenter.swift; sourceTree = "<group>"; };
+		F844BC2628D124CF00669178 /* MoviesListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListPresenterTests.swift; sourceTree = "<group>"; };
+		F844BC2928D125AE00669178 /* MockMoviesListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMoviesListDelegate.swift; sourceTree = "<group>"; };
+		F844BC2D28D12D7C00669178 /* MovieCellPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCellPresenterTests.swift; sourceTree = "<group>"; };
+		F844BC2F28D12D9400669178 /* MockMovieCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieCellDelegate.swift; sourceTree = "<group>"; };
+		F844BC3128D12E8900669178 /* MockMovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,7 +163,9 @@
 		F844BBB328D0DF9C00669178 /* MoviesAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				F844BC2528D1249E00669178 /* MoviesList */,
 				F844BBED28D0EE9D00669178 /* Network */,
+				F844BC2828D1257500669178 /* Mocks */,
 				F844BBB428D0DF9C00669178 /* MoviesAppTests.swift */,
 			);
 			path = MoviesAppTests;
@@ -270,6 +282,25 @@
 				F844BBA828D0DF9C00669178 /* LaunchScreen.storyboard */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		F844BC2528D1249E00669178 /* MoviesList */ = {
+			isa = PBXGroup;
+			children = (
+				F844BC2628D124CF00669178 /* MoviesListPresenterTests.swift */,
+				F844BC2D28D12D7C00669178 /* MovieCellPresenterTests.swift */,
+			);
+			path = MoviesList;
+			sourceTree = "<group>";
+		};
+		F844BC2828D1257500669178 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				F844BC2928D125AE00669178 /* MockMoviesListDelegate.swift */,
+				F844BC2F28D12D9400669178 /* MockMovieCellDelegate.swift */,
+				F844BC3128D12E8900669178 /* MockMovieModel.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,9 +461,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F844BC2A28D125AE00669178 /* MockMoviesListDelegate.swift in Sources */,
+				F844BC3028D12D9400669178 /* MockMovieCellDelegate.swift in Sources */,
+				F844BC3228D12E8900669178 /* MockMovieModel.swift in Sources */,
+				F844BC2E28D12D7C00669178 /* MovieCellPresenterTests.swift in Sources */,
 				F844BBEF28D0EEB600669178 /* RequestHandlerTests.swift in Sources */,
 				F844BBB528D0DF9C00669178 /* MoviesAppTests.swift in Sources */,
 				F844BBF828D0FE2700669178 /* DownloadImageServiceTests.swift in Sources */,
+				F844BC2728D124CF00669178 /* MoviesListPresenterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
