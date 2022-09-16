@@ -50,7 +50,11 @@ final class MoviesListPresenter {
     
     func getDetails(of movieIndex: Int){
         let selectedMovie = self.movies[movieIndex]
-        let id = selectedMovie.id
+        guard let id = selectedMovie.id else {
+            // API returns nil id
+            delegate?.showError(message: "There is an error")
+            return
+        }
         let detailsAPI = APIRequest.getMovieDetails(id)
         requestHandler.request(route: detailsAPI) { [weak self] (result: Result<MovieDetailsModel,RequestError>) in
             DispatchQueue.main.async {
