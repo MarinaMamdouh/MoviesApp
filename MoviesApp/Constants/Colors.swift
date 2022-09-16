@@ -14,7 +14,7 @@ extension UIColor{
 
 // General Font theme
 struct ColorTheme{
-    let background = UIColor(named: "Background")
-    let primary = UIColor(named: "Primary")
-    let secondary = UIColor(named: "Secondary")
+    let background = UIColor(named: "Background")!
+    let primary = UIColor(named: "Primary")!
+    let secondary = UIColor(named: "Secondary")!
 }

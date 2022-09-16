@@ -27,6 +27,13 @@ class MoviesListViewController: UIViewController {
         return tableView
     }()
     
+    var loadingIndicator: CircularLoadingIndicator = {
+        let indicator = CircularLoadingIndicator()
+        indicator.color = .theme.secondary
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     convenience init(presenter: MoviesListPresenter){
         self.init()
         self.presenter = presenter
@@ -40,6 +47,7 @@ class MoviesListViewController: UIViewController {
         setupPresenter()
         setupTable()
         // Begin download movies from server
+        startLoading()
         presenter.loadMovies()
     }
     
@@ -47,6 +55,18 @@ class MoviesListViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.identifier)
+    }
+    
+    private func startLoading(){
+        loadingIndicator.animate()
+        loadingIndicator.isHidden = false
+        tableView.isHidden = true
+    }
+    
+    private func stopLoading(){
+        loadingIndicator.stopAnimation()
+        loadingIndicator.isHidden = true
+        tableView.isHidden = false
     }
 
 }
@@ -131,10 +151,12 @@ extension MoviesListViewController: UIScrollViewDelegate {
 
 extension MoviesListViewController: MoviesListDelegate {
     func moviesListDidUpdate() {
+        stopLoading()
         tableView.reloadData()
     }
     
     func showError(message: String) {
+        stopLoading()
         self.showAlert(with: message)
     }
     
@@ -180,6 +202,17 @@ extension MoviesListViewController{
             // Bottom Constraint
             tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        layoutLoadingIndicator()
         
+    }
+    
+    private func layoutLoadingIndicator(){
+        self.view.addSubview(loadingIndicator)
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -20),
+            loadingIndicator.widthAnchor.constraint(equalToConstant: CGFloat(Constants.UI.loadingIndicatorSize)),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: CGFloat(Constants.UI.loadingIndicatorSize))
+        ])
     }
 }
