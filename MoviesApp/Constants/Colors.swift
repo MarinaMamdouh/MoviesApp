@@ -16,4 +16,5 @@ extension UIColor{
 struct ColorTheme{
     let background = UIColor(named: "Background")
     let primary = UIColor(named: "Primary")
+    let secondary = UIColor(named: "Secondary")
 }

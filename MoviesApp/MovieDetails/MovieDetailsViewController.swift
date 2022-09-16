@@ -15,11 +15,14 @@ class MovieDetailsViewController: UIViewController, UIViewControllerHandling {
     var overviewTextView = UITextView()
     var overViewTitleLabel = UILabel()
     var titleLabel = UILabel()
-    //var movieStatsView = MovieStatisticsView()
+    var movieStatsView: MovieStatisticsView?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.delegate = self
+        // TODO: Handle the optional
+        movieStatsView = MovieStatisticsView(presenter: self.presenter!)
         styleUIComponents()
         autoLayoutUIComponents()
     }
@@ -63,8 +66,7 @@ extension MovieDetailsViewController {
     }
     
     func styleMovieStatsView() {
-//        movieStatsView.viewModel = self.viewModel
-//        movieStatsView.translatesAutoresizingMaskIntoConstraints = false
+        movieStatsView?.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func styleMovieImage() {
@@ -78,7 +80,7 @@ extension MovieDetailsViewController {
         overViewTitleLabel.font = UIFont.theme.subTitleFont
         overviewTextView.backgroundColor = .clear
         overviewTextView.text = presenter?.overView
-        overviewTextView.textColor = .theme.primary
+        overviewTextView.textColor = .theme.secondary
         overviewTextView.font = UIFont.theme.bodyFont
         overviewTextView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -106,13 +108,12 @@ extension MovieDetailsViewController {
         ])
     }
     func layoutStatsView() {
-        //self.view.addSubview(movieStatsView)
-//        NSLayoutConstraint.activate([
-//            movieStatsView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-//            movieStatsView.leadingAnchor.constraint(equalToSystemSpacingAfter: moviePosterImageView.trailingAnchor, multiplier: 1),
-//            self.view.trailingAnchor.constraint(equalToSystemSpacingAfter: movieStatsView.trailingAnchor, multiplier: 2),
-//            movieStatsView.bottomAnchor.constraint(equalTo: moviePosterImageView.bottomAnchor)
-//        ])
+        self.vStackView.addArrangedSubview(movieStatsView!)
+        NSLayoutConstraint.activate([
+            self.movieStatsView!.centerXAnchor.constraint(equalTo: self.vStackView.centerXAnchor),
+            self.movieStatsView!.widthAnchor.constraint(equalTo: vStackView.widthAnchor),
+            self.movieStatsView!.heightAnchor.constraint(equalToConstant: 150)
+        ])
     }
     
     func layoutTitleLabel(){
@@ -122,9 +123,10 @@ extension MovieDetailsViewController {
     func layoutImage() {
         self.vStackView.addArrangedSubview(backDropImageView)
         NSLayoutConstraint.activate([
-            backDropImageView.widthAnchor.constraint(equalTo: vStackView.widthAnchor),
-            backDropImageView.heightAnchor.constraint(equalTo: backDropImageView.widthAnchor, multiplier: 2.0/3.0),
-            backDropImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            backDropImageView.widthAnchor.constraint(equalTo: self.vStackView.widthAnchor),
+            // any Backdrop aspect ratio is W:H = 16:9
+            backDropImageView.heightAnchor.constraint(equalTo: backDropImageView.widthAnchor, multiplier: 9.0/16.0),
+            backDropImageView.centerXAnchor.constraint(equalTo: self.vStackView.centerXAnchor)
         ])
     }
     

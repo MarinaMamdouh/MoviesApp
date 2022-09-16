@@ -16,8 +16,8 @@ extension UIFont{
 struct FontTheme{
     let largeTitleFont = UIFont.preferredFont(forTextStyle: .largeTitle)
      let subTitleFont = UIFont.systemFont(ofSize: 20)
-     let bodyFont = UIFont.systemFont(ofSize: 14)
-     let bodyFontBold = UIFont.systemFont(ofSize: 14, weight: .bold)
+     let bodyFont = UIFont.systemFont(ofSize: 16)
+     let bodyFontBold = UIFont.systemFont(ofSize: 16, weight: .bold)
      let subTitleBoldFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-     let smallFont =  UIFont.systemFont(ofSize: 10)
+     let smallFont =  UIFont.systemFont(ofSize: 12)
 }

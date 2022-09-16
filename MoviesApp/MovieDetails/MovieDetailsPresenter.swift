@@ -18,9 +18,8 @@ class MovieDetailsPresenter {
     var title: String { movieDetails.englishTitle }
     var overView: String { movieDetails.overview }
     var ratingAttributedString: NSAttributedString { getFormattedVote() }
-    var genresAttributedString: NSAttributedString { getGenres() }
+    var genresString: String { getGenres() }
     var revenueAttributedString: NSAttributedString { getFormattedRevenue() }
-    var budgetAttributedString: NSAttributedString { getFormattedBudget() }
     
     
     private var movieDetails: MovieDetailsModel
@@ -52,21 +51,18 @@ class MovieDetailsPresenter {
     // format the average votes of the movie * 6.7/ 10
     private func getFormattedVote() -> NSAttributedString {
         let formattedVoteString = NSMutableAttributedString()
-        let voteScoreString = " \(movieDetails.vote)/" +
-        "\(Constants.Texts.tenNumber)"
+        let voteScoreString = " " + String(format: "%.1f", movieDetails.vote) +
+        " /\(Constants.Texts.tenNumber)"
         
         let voteScoreAttributedString = NSAttributedString(string: voteScoreString, attributes: [NSAttributedString.Key.font: UIFont.theme.subTitleBoldFont])
         formattedVoteString.append(voteScoreAttributedString)
-        
-        let voteCountString = "\n(\(movieDetails.votesCount) " +
-        "\(Constants.Texts.votes)"
-        let voteCountAttributedString = NSAttributedString(string: voteCountString, attributes: [NSAttributedString.Key.font: UIFont.theme.smallFont])
-        formattedVoteString.append(voteCountAttributedString)
+
         
         return formattedVoteString
     }
     
-    func getFormattedRevenue() -> NSAttributedString {
+    // get Revenue formattedString ->  Box Office: $10,000,000
+    private func getFormattedRevenue() -> NSAttributedString {
         let formattedRevenueString = NSMutableAttributedString(string: "\( Constants.Texts.boxOffice): ", attributes: [NSAttributedString.Key.font: UIFont.theme.bodyFontBold])
         let revenueString = "\(movieDetails.revenue.toMoney)"
         let revenueAttributedString = NSAttributedString(string: revenueString, attributes: [NSAttributedString.Key.font: UIFont.theme.smallFont])
@@ -74,27 +70,14 @@ class MovieDetailsPresenter {
         return formattedRevenueString
     }
     
-    func getFormattedBudget() -> NSAttributedString {
-        let formattedBudgetString = NSMutableAttributedString(string: "\( Constants.Texts.budget): ", attributes: [NSAttributedString.Key.font: UIFont.theme.bodyFontBold])
-        
-        let budgetString = "\(movieDetails.budget.toMoney)"
-        let budgetAttributedString = NSAttributedString(string: budgetString, attributes: [NSAttributedString.Key.font: UIFont.theme.smallFont])
-        
-        formattedBudgetString.append(budgetAttributedString)
-        return formattedBudgetString
-    }
-    
-    func getGenres() -> NSAttributedString {
-        let formattedGenreString = NSMutableAttributedString(string: "\( Constants.Texts.genres): ", attributes: [NSAttributedString.Key.font: UIFont.theme.bodyFontBold])
-        
+    // get genres string -> Thriller, Drama, Action
+    private func getGenres() -> String {
         let genresNames = getGenresNames()
         let genresString = genresNames.joined(separator: ", ")
-        let genresAttributedString = NSAttributedString(string: genresString, attributes: [NSAttributedString.Key.font: UIFont.theme.smallFont])
-        
-        formattedGenreString.append(genresAttributedString)
-        return formattedGenreString
+        return genresString
     }
     
+    // get array of genres names
     private func getGenresNames() -> [String] {
         var genresNames = [String]()
 

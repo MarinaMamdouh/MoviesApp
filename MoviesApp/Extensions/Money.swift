@@ -11,6 +11,8 @@ extension Int {
     var toMoney: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
+        formatter.locale =  Locale(identifier: "en")
+        formatter.currencySymbol = "$"
         formatter.maximumFractionDigits = 0
         if let formattedAmount = formatter.string(from: self as NSNumber) {
             return formattedAmount
