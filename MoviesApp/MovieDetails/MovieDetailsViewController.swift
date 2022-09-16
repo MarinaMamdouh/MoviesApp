@@ -7,23 +7,62 @@
 
 import UIKit
 
-class MovieDetailsViewController: UIViewController, UIViewControllerHandling {
+class MovieDetailsViewController: UIViewController {
     var presenter: MovieDetailsPresenter?
     // UIComponents
-    var vStackView =  UIStackView()
-    var backDropImageView = UIImageView()
-    var overviewTextView = UITextView()
-    var overViewTitleLabel = UILabel()
-    var titleLabel = UILabel()
-    var movieStatsView: MovieStatisticsView?
-
+    var movieStatsView: MovieStatisticsView!
+    
+    let vStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.backgroundColor = .theme.background
+        stackView.alignment = .fill
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    let backDropImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.theme.largeTitleFont
+        label.textColor = .theme.primary
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    
+    let overviewTextView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.textColor = .theme.secondary
+        textView.font = UIFont.theme.bodyFont
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    let overViewTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.Texts.plotHeader
+        label.textColor = .theme.primary
+        label.font = UIFont.theme.subTitleFont
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.delegate = self
-        // TODO: Handle the optional
         movieStatsView = MovieStatisticsView(presenter: self.presenter!)
-        styleUIComponents()
+        titleLabel.text = presenter?.title
+        overviewTextView.text = presenter?.overView
+        self.view.backgroundColor = .theme.background
         autoLayoutUIComponents()
     }
 }
@@ -31,58 +70,6 @@ class MovieDetailsViewController: UIViewController, UIViewControllerHandling {
 extension MovieDetailsViewController: MovieDetailsDelegate{
     func imageIsDownloaded(image: UIImage) {
         self.backDropImageView.image = image
-    }
-    
-}
-
-// Styling UIComponents
-extension MovieDetailsViewController {
-    
-    func styleUIComponents() {
-        self.view.backgroundColor = .theme.background
-        styleStackView()
-        styleMovieImage()
-        styleMovieTitleLabel()
-        styleMovieStatsView()
-        styleMovieDescTextView()
-    }
-    
-    func styleStackView(){
-        vStackView = UIStackView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        vStackView.backgroundColor = .theme.background
-        vStackView.alignment = .fill
-        vStackView.axis = .vertical
-        vStackView.distribution = .fill
-        vStackView.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    func styleMovieTitleLabel() {
-        titleLabel.text = presenter?.title
-        titleLabel.font = UIFont.theme.largeTitleFont
-        titleLabel.textColor = .theme.primary
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 0
-        titleLabel.lineBreakMode = .byWordWrapping
-    }
-    
-    func styleMovieStatsView() {
-        movieStatsView?.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    func styleMovieImage() {
-        backDropImageView.contentMode = .scaleAspectFill
-        backDropImageView.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    func styleMovieDescTextView() {
-        overViewTitleLabel.text = Constants.Texts.plotHeader
-        overViewTitleLabel.textColor = .theme.primary
-        overViewTitleLabel.font = UIFont.theme.subTitleFont
-        overviewTextView.backgroundColor = .clear
-        overviewTextView.text = presenter?.overView
-        overviewTextView.textColor = .theme.secondary
-        overviewTextView.font = UIFont.theme.bodyFont
-        overviewTextView.translatesAutoresizingMaskIntoConstraints = false
     }
     
 }
@@ -108,11 +95,11 @@ extension MovieDetailsViewController {
         ])
     }
     func layoutStatsView() {
-        self.vStackView.addArrangedSubview(movieStatsView!)
+        self.vStackView.addArrangedSubview(movieStatsView)
         NSLayoutConstraint.activate([
-            self.movieStatsView!.centerXAnchor.constraint(equalTo: self.vStackView.centerXAnchor),
-            self.movieStatsView!.widthAnchor.constraint(equalTo: vStackView.widthAnchor),
-            self.movieStatsView!.heightAnchor.constraint(equalToConstant: 150)
+            self.movieStatsView.centerXAnchor.constraint(equalTo: self.vStackView.centerXAnchor),
+            self.movieStatsView.widthAnchor.constraint(equalTo: vStackView.widthAnchor),
+            self.movieStatsView.heightAnchor.constraint(equalToConstant: 150)
         ])
     }
     

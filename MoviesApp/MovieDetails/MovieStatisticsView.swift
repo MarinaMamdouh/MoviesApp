@@ -9,10 +9,44 @@ import UIKit
 
 class MovieStatisticsView: UIView {
     var presenter: MovieDetailsPresenter
-    var stackView = UIStackView()
-    var voteLabel = UILabel()
-    var genresLabel = UILabel()
-    var boxOfficeLabel = UILabel()
+    
+    // UI Components
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .fill
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    var voteLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .theme.primary
+        label.textAlignment = .center
+        label.numberOfLines = 2 // to hold rating and votes count
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var genresLabel: UILabel = {
+        let label = UILabel()
+        label.font = .theme.subTitleFont
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.textColor = .theme.secondary
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var boxOfficeLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .theme.primary
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     init(presenter: MovieDetailsPresenter){
         self.presenter = presenter
@@ -25,39 +59,12 @@ class MovieStatisticsView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        styleUIComponents()
+        loadDataToUI()
         autoLayoutUIComponents()
     }
-}
-
-// Main UI Handling
-extension MovieStatisticsView: UIViewControllerHandling {
-    func styleUIComponents() {
-        styleStackView()
-        styleVoteLabel()
-        styleBoxOfficeLabel()
-        styleGenresLabel()
-        
-    }
     
-    func autoLayoutUIComponents() {
-        layoutStackView()
-    }
-    
-}
-
-// Styling UI Components
-extension MovieStatisticsView {
-    func styleStackView() {
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        stackView.alignment = .fill
-        stackView.spacing = 10
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        //stackView.spacing = CGFloat(Constants.UI.verticalSpacing)
-    }
-    
-    func styleVoteLabel() {
+    func loadDataToUI(){
+        // Vote Label
         let attachment = NSTextAttachment()
         let config = UIImage.SymbolConfiguration(hierarchicalColor: .orange)
         attachment.image = UIImage(systemName: "star.fill", withConfiguration: config)
@@ -66,32 +73,21 @@ extension MovieStatisticsView {
         let textString = presenter.ratingAttributedString
         imageString.append(textString)
         voteLabel.attributedText = imageString
-        voteLabel.textColor = .theme.primary
-        voteLabel.textAlignment = .center
-        voteLabel.numberOfLines = 2
-        voteLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    func styleBoxOfficeLabel() {
-        boxOfficeLabel.attributedText = presenter.revenueAttributedString
-        boxOfficeLabel.textAlignment = .center
-        boxOfficeLabel.textColor = .theme.primary
-        boxOfficeLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    
-    func styleGenresLabel() {
+        // Genres Label
         genresLabel.text = presenter.genresString
-        genresLabel.font = .theme.subTitleFont
-        genresLabel.numberOfLines = 0
-        genresLabel.textAlignment = .center
-        genresLabel.textColor = .theme.secondary
-        genresLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Box Office Label
+        boxOfficeLabel.attributedText = presenter.revenueAttributedString
     }
 }
 
+
 // Handling Auto Layout of UI Components
 extension MovieStatisticsView {
+    
+    func autoLayoutUIComponents() {
+        layoutStackView()
+    }
+    
     func layoutStackView() {
         self.addSubview(stackView)
         addViewsToStack()
