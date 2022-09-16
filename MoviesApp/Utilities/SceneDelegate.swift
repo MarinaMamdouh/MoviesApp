@@ -23,11 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func invokeFirstViewController(in scene: UIWindowScene) {
         window =  UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
-        
-        let movieListViewController = MoviesListViewController()
-        let mainNavigationController =  UINavigationController(rootViewController: movieListViewController)
-        mainNavigationController.navigationBar.prefersLargeTitles = true
-        window?.rootViewController = mainNavigationController
+
+        window?.rootViewController = MoviesListViewController()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -11,7 +11,7 @@ struct MovieDetailsModel: Codable {
     let englishTitle: String
     let originalTitle: String
     let overview: String
-    let imagePath: String
+    let backdropPath: String
     let genres: [Genre]
     let vote: Double
     let votesCount: Int
@@ -27,7 +27,7 @@ extension MovieDetailsModel {
         case genres
         case englishTitle = "title"
         case originalTitle = "original_title"
-        case imagePath = "poster_path"
+        case backdropPath = "backdrop_path"
         case vote = "vote_average"
         case votesCount = "vote_count"
     }

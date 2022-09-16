@@ -28,7 +28,8 @@ class MovieCell: UITableViewCell {
     private func setConfiguration(){
         self.configuration = self.defaultContentConfiguration()
         self.configuration?.text = presenter?.movie.title
-        self.configuration?.textProperties.font =  UIFont.systemFont(ofSize: 16)
+        self.configuration?.textProperties.font =  UIFont.theme.subTitleFont
+        self.configuration?.textProperties.color = .theme.primary!
         configuration?.imageProperties.maximumSize =  CGSize(width: Constants.UI.movieCellImageHeight, height: Constants.UI.movieCellImageHeight)
         self.contentConfiguration = configuration
     }

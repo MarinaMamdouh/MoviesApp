@@ -10,6 +10,7 @@ import UIKit
 class MoviesListViewController: UIViewController, UIViewControllerHandling {
     var tableView = UITableView()
     var presenter = MoviesListPresenter()
+    var titlLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +24,12 @@ class MoviesListViewController: UIViewController, UIViewControllerHandling {
     
     func styleUIComponents() {
         // Style NavigationBar
-        self.title = "Movies"
-        self.view.backgroundColor = .white
+        self.titlLabel.text = Constants.Texts.movies
+        self.titlLabel.font = UIFont.theme.largeTitleFont
+        self.titlLabel.textColor = .theme.primary
+        titlLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.backgroundColor = .theme.background
+        self.tableView.backgroundColor = .theme.background
 //        let titleLocalizedKey =  Constants.NavigationBarTitles.moviesList
 //        title = String(localizedKey: titleLocalizedKey)
         // Style tableView
@@ -36,9 +41,13 @@ class MoviesListViewController: UIViewController, UIViewControllerHandling {
         
         // Auto Layout TableView
         self.view.addSubview(tableView)
+        self.view.addSubview(titlLabel)
         NSLayoutConstraint.activate([
             // top Constraint
-            tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            titlLabel.topAnchor.constraint(equalToSystemSpacingBelow: self.view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
+            titlLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: self.view.leadingAnchor, multiplier: 2),
+            titlLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: self.view.trailingAnchor, multiplier: 1),
+            tableView.topAnchor.constraint(equalTo: self.titlLabel.bottomAnchor, constant: 20),
             // Leading Constraint
             tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             // Trailing Constraint
@@ -72,6 +81,7 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
         let movieToBeDisplayed = presenter.movies[indexPath.row]
         let cellPresenter = MovieCellPresenter(movieModel: movieToBeDisplayed)
         cell.configure(with: cellPresenter)
+        cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell
     }
@@ -134,10 +144,11 @@ extension MoviesListViewController: MoviesListDelegate {
     
     func showMovieDetails(details: MovieDetailsModel) {
         // create the MovieDetails Module
-        //let movieDetailsViewController = MovieDetailsViewController()
-       // movieDetailsViewController.viewModel = MovieDetailsViewModel(details)
-        // push it to the app navigationController
-       // self.navigationController?.pushViewController(movieDetailsViewController, animated: true)
+        let movieDetailsViewController = MovieDetailsViewController()
+        movieDetailsViewController.presenter = MovieDetailsPresenter(details)
+        movieDetailsViewController.modalPresentationStyle = .popover
+        movieDetailsViewController.modalTransitionStyle = .coverVertical
+        present(movieDetailsViewController, animated: true, completion: nil)
     }
     
     func viewModelDidUpdate() {
