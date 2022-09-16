@@ -11,8 +11,8 @@ import UIKit
 extension UIViewController {
     
     func showAlert(with message: String) {
-        let title = "Error"
-        let okButtonTitle = "Ok"
+        let title = Constants.Texts.errorTitle
+        let okButtonTitle = Constants.Texts.okLabel
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction( UIAlertAction(title: okButtonTitle, style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)

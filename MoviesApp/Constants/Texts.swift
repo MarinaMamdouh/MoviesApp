@@ -8,6 +8,7 @@
 import Foundation
 
 extension Constants{
+    // to be used in localization
     struct Texts{
         static let movies = "Movies"
         static let plotHeader = "The Plot"
@@ -16,5 +17,7 @@ extension Constants{
         static let boxOffice = "Box Office"
         static let budget = "Budget"
         static let genres = "Genres"
+        static let errorTitle = "Error"
+        static let okLabel = "Ok"
     }
 }
