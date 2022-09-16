@@ -8,16 +8,16 @@
 import Foundation
 
 struct MovieDetailsModel: Codable {
-    let englishTitle: String
-    let originalTitle: String
-    let overview: String
-    let backdropPath: String
-    let releaseDate: String
-    let genres: [Genre]
-    let vote: Double
-    let votesCount: Int
-    let budget: Int
-    let revenue: Int
+    let englishTitle: String?
+    let originalTitle: String?
+    let overview: String?
+    let backdropPath: String?
+    let releaseDate: String?
+    let genres: [Genre]?
+    let vote: Double?
+    let votesCount: Int?
+    let budget: Int?
+    let revenue: Int?
 }
 
 extension MovieDetailsModel {

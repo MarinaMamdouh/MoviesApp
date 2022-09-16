@@ -22,7 +22,7 @@ final class MovieCellPresenter{
     }
     
     func downloadImage(){
-        let path = movie.imagePath
+        guard let path = movie.imagePath else { return }
         downloadImageService.requestImage(name: path, size: Constants.APIs.posterImageSize) { [weak self] (result: Result<UIImage, RequestError>) in
             // go to the main thread
             DispatchQueue.main.async {

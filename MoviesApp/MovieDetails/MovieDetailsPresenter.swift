@@ -15,8 +15,8 @@ protocol MovieDetailsDelegate: AnyObject{
 
 class MovieDetailsPresenter {
     var delegate: MovieDetailsDelegate?
-    var title: String { movieDetails.englishTitle }
-    var overView: String { movieDetails.overview }
+    var title: String { movieDetails.englishTitle ?? "" }
+    var overView: String { movieDetails.overview ?? "" }
     var ratingAttributedString: NSAttributedString { getFormattedVote() }
     var genresString: String { getGenres() }
     var revenueAttributedString: NSAttributedString { getFormattedRevenue() }
@@ -32,7 +32,9 @@ class MovieDetailsPresenter {
     
     private func downloadBackdropImage(){
         let downloadImageService = DownloadImageService()
-        let backDropName = movieDetails.backdropPath
+        guard let backDropName = movieDetails.backdropPath else {
+            return
+        }
         let backdropSize = Constants.APIs.backdropImageSize
         downloadImageService.requestImage(name: backDropName, size: backdropSize) { [weak self] (result: Result<UIImage, RequestError>) in
             DispatchQueue.main.async {
@@ -52,7 +54,7 @@ class MovieDetailsPresenter {
     // format the average votes of the movie * 6.7/ 10
     private func getFormattedVote() -> NSAttributedString {
         let formattedVoteString = NSMutableAttributedString()
-        let voteScoreString = " " + String(format: "%.1f", movieDetails.vote) +
+        let voteScoreString = " " + String(format: "%.1f", movieDetails.vote ?? "0.0") +
         " /\(Constants.Texts.tenNumber)"
         
         let voteScoreAttributedString = NSAttributedString(string: voteScoreString, attributes: [NSAttributedString.Key.font: UIFont.theme.subTitleBoldFont])
@@ -65,7 +67,7 @@ class MovieDetailsPresenter {
     // get Revenue formattedString ->  Box Office: $10,000,000
     private func getFormattedRevenue() -> NSAttributedString {
         let formattedRevenueString = NSMutableAttributedString(string: "\( Constants.Texts.boxOffice): ", attributes: [NSAttributedString.Key.font: UIFont.theme.bodyFontBold])
-        let revenueString = "\(movieDetails.revenue.toMoney)"
+        let revenueString = "\(movieDetails.revenue?.toMoney ?? 0.toMoney)"
         let revenueAttributedString = NSAttributedString(string: revenueString, attributes: [NSAttributedString.Key.font: UIFont.theme.smallFont])
         formattedRevenueString.append(revenueAttributedString)
         return formattedRevenueString
@@ -80,9 +82,10 @@ class MovieDetailsPresenter {
     
     // get array of genres names
     private func getGenresNames() -> [String] {
+        guard let genres =  movieDetails.genres else { return [] }
         var genresNames = [String]()
 
-        for genre in movieDetails.genres {
+        for genre in genres {
             genresNames.append(genre.name)
         }
         return genresNames
@@ -90,7 +93,7 @@ class MovieDetailsPresenter {
     
     private func getReleaseYear() -> String{
         var releaseYear = Constants.Texts.unknown
-        if let releaseDate = movieDetails.releaseDate.toDate{
+        if let releaseDate = movieDetails.releaseDate?.toDate{
             releaseYear = "(\(releaseDate.get(.year)))"
         }
         return releaseYear

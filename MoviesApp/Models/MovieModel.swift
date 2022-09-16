@@ -9,10 +9,10 @@ import Foundation
 
 struct MovieModel: Codable {
     let id: Int
-    let originalTitle: String
-    let title: String
-    let language: String
-    let imagePath: String
+    let originalTitle: String?
+    let title: String?
+    let language: String?
+    let imagePath: String?
     
 }
 
