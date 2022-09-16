@@ -36,6 +36,16 @@ class MovieDetailsViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let yearLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.theme.subTitleFont
+        label.textColor = .theme.primary
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -61,6 +71,7 @@ class MovieDetailsViewController: UIViewController {
         presenter?.delegate = self
         movieStatsView = MovieStatisticsView(presenter: self.presenter!)
         titleLabel.text = presenter?.title
+        yearLabel.text = presenter?.releaseYear
         overviewTextView.text = presenter?.overView
         self.view.backgroundColor = .theme.background
         autoLayoutUIComponents()
@@ -81,6 +92,7 @@ extension MovieDetailsViewController {
         layoutVStackView()
         layoutImage()
         layoutTitleLabel()
+        layoutYearLabel()
         layoutStatsView()
         layoutDescription()
     }
@@ -105,6 +117,18 @@ extension MovieDetailsViewController {
     
     func layoutTitleLabel(){
         vStackView.addArrangedSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            self.titleLabel.leadingAnchor.constraint(equalTo: self.vStackView.leadingAnchor, constant: 10),
+            self.titleLabel.trailingAnchor.constraint(equalTo: self.vStackView.trailingAnchor, constant: -10)
+        ])
+    }
+    
+    func layoutYearLabel(){
+        vStackView.addArrangedSubview(yearLabel)
+        NSLayoutConstraint.activate([
+            self.yearLabel.leadingAnchor.constraint(equalTo: self.vStackView.leadingAnchor, constant: 10),
+            self.yearLabel.trailingAnchor.constraint(equalTo: self.vStackView.trailingAnchor, constant: -10)
+        ])
     }
     
     func layoutImage() {

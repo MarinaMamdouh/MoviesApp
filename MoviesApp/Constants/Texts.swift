@@ -19,5 +19,6 @@ extension Constants{
         static let genres = "Genres"
         static let errorTitle = "Error"
         static let okLabel = "Ok"
+        static let unknown = "Unknown"
     }
 }

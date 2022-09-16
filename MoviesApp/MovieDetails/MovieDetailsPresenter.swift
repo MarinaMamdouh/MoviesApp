@@ -20,6 +20,7 @@ class MovieDetailsPresenter {
     var ratingAttributedString: NSAttributedString { getFormattedVote() }
     var genresString: String { getGenres() }
     var revenueAttributedString: NSAttributedString { getFormattedRevenue() }
+    var releaseYear: String { getReleaseYear() }
     
     
     private var movieDetails: MovieDetailsModel
@@ -85,5 +86,13 @@ class MovieDetailsPresenter {
             genresNames.append(genre.name)
         }
         return genresNames
+    }
+    
+    private func getReleaseYear() -> String{
+        var releaseYear = Constants.Texts.unknown
+        if let releaseDate = movieDetails.releaseDate.toDate{
+            releaseYear = "(\(releaseDate.get(.year)))"
+        }
+        return releaseYear
     }
 }

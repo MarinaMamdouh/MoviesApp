@@ -15,8 +15,8 @@ class MovieStatisticsView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
-        stackView.alignment = .fill
-        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -32,7 +32,7 @@ class MovieStatisticsView: UIView {
     
     var genresLabel: UILabel = {
         let label = UILabel()
-        label.font = .theme.subTitleFont
+        label.font = .theme.subTitle2
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .theme.secondary
@@ -92,10 +92,9 @@ extension MovieStatisticsView {
         self.addSubview(stackView)
         addViewsToStack()
         NSLayoutConstraint.activate([
-            self.stackView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             self.stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
     
