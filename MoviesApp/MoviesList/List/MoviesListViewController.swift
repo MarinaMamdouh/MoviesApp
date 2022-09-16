@@ -8,7 +8,8 @@
 import UIKit
 
 class MoviesListViewController: UIViewController {
-    var presenter = MoviesListPresenter()
+    // Note: You Have to use the convenience init or inject it to the ViewController in order not to create exception
+    var presenter: MoviesListPresenter!
     // UI Components
     var titlLabel: UILabel = {
         let label = UILabel()
@@ -26,13 +27,19 @@ class MoviesListViewController: UIViewController {
         return tableView
     }()
     
+    convenience init(presenter: MoviesListPresenter){
+        self.init()
+        self.presenter = presenter
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .theme.background
         autoLayoutUIComponents()
-        setupViewModel()
+        setupPresenter()
         setupTable()
+        // Begin download movies from server
         presenter.loadMovies()
     }
     
@@ -52,6 +59,7 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
         return presenter.moviesCount
     }
     
+    // setup the height of the cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellContentHeight = CGFloat(Constants.UI.movieCellImageHeight)
         let heightPadding = CGFloat(Constants.UI.heightPadding)
@@ -59,18 +67,21 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    // load cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.identifier) as? MovieCell else {
             return UITableViewCell()
         }
         let movieToBeDisplayed = presenter.movies[indexPath.row]
         let cellPresenter = MovieCellPresenter(movieModel: movieToBeDisplayed)
+        // inject the presenter to cell to configure it
         cell.configure(with: cellPresenter)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell
     }
     
+    // cell is selected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let movieIndex =  indexPath.row
         presenter.getDetails(of: movieIndex)
@@ -82,17 +93,23 @@ extension MoviesListViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MoviesListViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if didReachBottom(scrollView) && !presenter.isLoading {
-            self.tableView.tableFooterView = createSpinner()
-            presenter.loadMovies()
+        // check if we reached the bottom and presenter is not currently loading data from server
+        if didReachBottom(scrollView) {
+            let willLoad = presenter.displayedAllMovies()
+            if willLoad{
+                self.tableView.tableFooterView = createSpinner()
+            }
         }
     }
     
+    // check if we reach the bottom of the tableview
     func didReachBottom(_ scrollView: UIScrollView) -> Bool {
         let currentOffset = scrollView.contentOffset.y
+        // get offset of the last cell(that is our threshhold)
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        // get the remaing Height to the threshold
         let remaingHeight = maximumOffset - currentOffset
-        
+        //if the remaing is less than or equal the spinner height
         if remaingHeight <= CGFloat(Constants.UI.spinnerViewHeight) {
             return true
         }
@@ -137,7 +154,7 @@ extension MoviesListViewController: MoviesListDelegate {
         
     }
     
-    func setupViewModel() {
+    func setupPresenter() {
         presenter.delegate = self
     }
     

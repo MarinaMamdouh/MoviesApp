@@ -43,7 +43,7 @@ final class MoviesListPresenter {
                     self?.delegate?.showError(message: "There is an error")
                     break
                 }
-                self?.isLoading = false
+                self?.changeLoadingStatus()
             }
         }
     }
@@ -63,6 +63,15 @@ final class MoviesListPresenter {
                 }
             }
         }
+    }
+    
+    func displayedAllMovies() -> Bool{
+        // if presenter is not currently loading
+        if !isLoading{
+            loadMovies()
+            return true
+        }
+        return false
     }
     
     private func goToNextPage() {

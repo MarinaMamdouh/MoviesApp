@@ -23,8 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func invokeFirstViewController(in scene: UIWindowScene) {
         window =  UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
-
-        window?.rootViewController = MoviesListViewController()
+        
+        let moviesListPresenter = MoviesListPresenter()
+        let moviesListVC =  MoviesListViewController(presenter: moviesListPresenter)
+        window?.rootViewController = moviesListVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
