@@ -19,6 +19,7 @@ final class MoviesListPresenter {
     private var currentPage = 0
     private var requestHandler = RequestHandler()
     public var isLoading = false
+    public var moviesAreReLoading = false
     var moviesCount: Int {
         self.movies.count
     }
@@ -32,18 +33,22 @@ final class MoviesListPresenter {
         
         let moviesAPI = APIRequest.getTrendingMovies(currentPage)
         requestHandler.request(route: moviesAPI) { [weak self] (result: Result<MoviesResponse,RequestError>) in
-            
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    self?.movies.append(contentsOf: response.results)
-                    self?.delegate?.moviesListDidUpdate()
+                    // if movies array before appending is empty
+                    // then moviesAre loading for the first time
+                    // else movies are reloading
+                    self.moviesAreReLoading = !self.movies.isEmpty
+                    self.movies.append(contentsOf: response.results)
+                    self.delegate?.moviesListDidUpdate()
                 case .failure(_):
                     // update View with Error
-                    self?.delegate?.showError(message: "There is an error")
+                    self.delegate?.showError(message: "There is an error")
                     break
                 }
-                self?.changeLoadingStatus()
+                self.changeLoadingStatus()
             }
         }
     }

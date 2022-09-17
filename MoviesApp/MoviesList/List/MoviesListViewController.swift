@@ -67,7 +67,11 @@ class MoviesListViewController: UIViewController {
         loadingIndicator.stopAnimation()
         loadingIndicator.isHidden = true
         tableView.isHidden = false
-        tableView.entryAnimation(withDuration: 1.0, delay: 0.5)
+        // apply animation only on loading first patch of movies
+        // this to avoid reoccurance of animation every time the table data is reloaded for smooth infinite scrolling
+        if !presenter.moviesAreReLoading{
+            tableView.entryAnimation(withDuration: 1.0, delay: 0.5)
+        }
     }
 
 }
