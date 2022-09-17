@@ -12,6 +12,12 @@ class MovieDetailsViewController: UIViewController {
     // UIComponents
     var movieStatsView: MovieStatisticsView!
     
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
     let vStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.backgroundColor = .theme.background
@@ -54,6 +60,7 @@ class MovieDetailsViewController: UIViewController {
         textView.backgroundColor = .clear
         textView.textColor = .theme.secondary
         textView.font = UIFont.theme.bodyFont
+        textView.isScrollEnabled = false
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -89,6 +96,7 @@ extension MovieDetailsViewController: MovieDetailsDelegate{
 extension MovieDetailsViewController {
     
     func autoLayoutUIComponents() {
+        layoutScrollView()
         layoutVStackView()
         layoutImage()
         layoutTitleLabel()
@@ -97,13 +105,23 @@ extension MovieDetailsViewController {
         layoutDescription()
     }
     
-    func layoutVStackView(){
-        self.view.addSubview(vStackView)
+    func layoutScrollView(){
+        self.view.addSubview(scrollView)
         NSLayoutConstraint.activate([
-            vStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            vStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            vStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            vStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+    }
+    
+    func layoutVStackView(){
+        self.scrollView.addSubview(vStackView)
+        NSLayoutConstraint.activate([
+            vStackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
+            vStackView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
+            vStackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
+            vStackView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor)
         ])
     }
     func layoutStatsView() {
@@ -148,7 +166,7 @@ extension MovieDetailsViewController {
             overViewTitleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: vStackView.leadingAnchor, multiplier: 1),
             overViewTitleLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: vStackView.trailingAnchor, multiplier: 1),
             overviewTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: vStackView.leadingAnchor, multiplier: 1),
-            overviewTextView.trailingAnchor.constraint(equalToSystemSpacingAfter: vStackView.trailingAnchor, multiplier: 1),
+            overviewTextView.trailingAnchor.constraint(equalToSystemSpacingAfter: vStackView.trailingAnchor, multiplier: 1)
         ])
     }
 }
