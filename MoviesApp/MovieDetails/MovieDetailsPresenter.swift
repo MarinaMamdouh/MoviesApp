@@ -14,7 +14,7 @@ protocol MovieDetailsDelegate: AnyObject{
 
 
 class MovieDetailsPresenter {
-    var delegate: MovieDetailsDelegate?
+    weak var delegate: MovieDetailsDelegate?
     var title: String { movieDetails.englishTitle ?? "" }
     var overView: String { movieDetails.overview ?? "" }
     var ratingAttributedString: NSAttributedString { getFormattedVote() }
