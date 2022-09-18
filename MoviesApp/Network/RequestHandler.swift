@@ -13,9 +13,10 @@ class RequestHandler {
     func request<T>(route: APIRequest, completionHandler: @escaping (Result<T, RequestError>) -> Void) where T: Codable {
         let request = route.asRequest()
         let session = URLSession.shared
-        let task = session.dataTask(with: request) { data, _, error in
+        let task = session.dataTask(with: request) { data, response, error in
             // Request Error
-            if let _ = error {
+            let httpURLResponse = response as? HTTPURLResponse
+            if (error != nil) || (httpURLResponse?.statusCode != 200) {
                 let networkError = RequestError.networkError( url: request.url?.absoluteString ?? "")
                 completionHandler(.failure(networkError))
                 return

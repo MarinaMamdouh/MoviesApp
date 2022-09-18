@@ -162,7 +162,12 @@ extension MoviesListViewController: MoviesListDelegate {
     
     func showError(message: String) {
         stopLoading()
-        self.showAlert(with: message)
+        let tryAgainText = Constants.Texts.tryAgain
+        let tryAgainAction =  UIAlertAction(title: tryAgainText, style: .cancel, handler: { _ in
+            self.startLoading()
+            self.presenter.loadMovies()
+        })
+        self.showAlert(with: message, action: tryAgainAction)
     }
     
     func showMovieDetails(details: MovieDetailsModel) {

@@ -27,7 +27,6 @@ final class MoviesListPresenter {
     weak var delegate: MoviesListDelegate?
     
     func loadMovies() {
-        
         self.goToNextPage()
         changeLoadingStatus()
         
@@ -45,7 +44,7 @@ final class MoviesListPresenter {
                     self.delegate?.moviesListDidUpdate()
                 case .failure(_):
                     // update View with Error
-                    self.delegate?.showError(message: "There is an error")
+                    self.delegate?.showError(message: Constants.Texts.networkConnectionErrorMessage)
                     break
                 }
                 self.changeLoadingStatus()

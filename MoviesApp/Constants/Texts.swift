@@ -20,5 +20,7 @@ extension Constants{
         static let errorTitle = "Error"
         static let okLabel = "Ok"
         static let unknown = "Unknown"
+        static let tryAgain = "Try Again"
+        static let networkConnectionErrorMessage = "Something went wrong. Check your network connection."
     }
 }
